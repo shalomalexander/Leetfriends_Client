@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   outline: 0;
-  box-sizing: border-box;  
+  box-sizing: border-box;
 }
 
 body {
@@ -10,17 +10,19 @@ body {
 }
 
 :root {
-  --background: #181820;
-  --background-light: #21212B;
+  --background: #1a1a1a;
+  --background-light: #282828;
 
-  --primary: #FFFFFF;
-  --secondary: #F95738;
+  --primary: #ffffff;
+  --secondary: #efba21;
   --terciary: #bbbbbb;
 }
 
-body, input, button {
+body,
+input,
+button {
   color: var(--primary);
-  font: 400 16px 'Fredoka', sans-serif;
+  font: 400 16px "Fredoka", sans-serif;
 }
 
 body {
@@ -30,3 +32,16 @@ body {
 button:hover {
   cursor: pointer;
 }
+
+table,
+th,
+td {
+  border-bottom: 1px solid #f1f1f1;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+th {
+  text-align: left;
+}
+

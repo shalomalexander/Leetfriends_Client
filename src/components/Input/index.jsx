@@ -1,5 +1,5 @@
-import styles from './index.module.css'
+import styles from "./index.module.css";
 
 export function Input(props) {
-  return <input className={styles.input} {...props} />
+  return <input className={styles.input} {...props} />;
 }

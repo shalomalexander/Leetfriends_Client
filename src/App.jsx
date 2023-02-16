@@ -1,100 +1,103 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react";
+import api from "./axiosConfig";
 
-import { Form } from './components/Form'
-import { Input } from "./components/Input"
-import { Tasks } from './components/Tasks'
+import { Form } from "./components/Form";
+import { Input } from "./components/Input";
+import { Tasks } from "./components/Tasks";
+import { Loader } from "./components/Loader";
 
-import styles from './styles/app.module.css'
+import styles from "./styles/app.module.css";
 
-const LOCALSTORAGE_TASKS_KEY = 'todolist-tasks'
+const LOCALSTORAGE_MEMBERS_KEY = "leetcode-members";
 
 export function App() {
-  const [tasks, setTasks] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [searchTaskName, setSearchTaskName] = useState('')
+  const [isLoading, setIsLoading] = useState(true);
+  const [members, setMembers] = useState([]);
+  const [loggedInUserLeetcodeProfile, setLoggedInUserLeetcodeProfile] =
+    useState({});
+  const [dataLoading, setDataLoading] = useState(false);
 
-  const onAddTask = (newTask) => {
-    setTasks(currentState => [...currentState, newTask])
-    setSearchTaskName('')
-  }
+  const onRemoveTask = (memberId) => {
+    setMembers((currentState) =>
+      currentState.filter((member) => member.id !== memberId)
+    );
+  };
 
-  const onRemoveTask = (taskId) => {
-    setTasks(currentState => currentState.filter(task => task.id !== taskId))
-  }
+  const submitMember = async (newMemberRequest) => {
+    setDataLoading(true);
+    const leetcodeMembers = [...members, newMemberRequest];
+    getUsersLeetcodeProfile(leetcodeMembers).then((data) => {
+      if (leetcodeMembers.length === data.response.length) {
+        const updatedLeetcodeMembers = leetcodeMembers.map(
+          (currentValue, index) => {
+            return { ...currentValue, data: data.response[index].data };
+          }
+        );
+        setMembers(updatedLeetcodeMembers);
+      }
+      setDataLoading(false);
+    });
+  };
 
-  const onChangeCompleted = (taskId) => {
-    const taskIndex = tasks.findIndex(task => task.id === taskId)
-
-    const updatedTask = [...tasks]
-    updatedTask[taskIndex].completed = !updatedTask[taskIndex].completed
-    
-    setTasks(updatedTask)
-  }
-
-  // Esse bloco de código é disparado toda a vez que o array de
-  // tasks sofrer alguma alteração(add, remove, update)
   useEffect(() => {
-    if(!isLoading) {
-      localStorage.setItem(LOCALSTORAGE_TASKS_KEY, JSON.stringify(tasks))
+    if (!isLoading) {
+      localStorage.setItem(LOCALSTORAGE_MEMBERS_KEY, JSON.stringify(members));
     }
-  }, [tasks])
+  }, [members]);
 
-  // Esse bloco de código é disparado ao carregar a página do usuário
   useEffect(() => {
-    const tasksLocal = localStorage.getItem(LOCALSTORAGE_TASKS_KEY)
-    tasksLocal && setTasks(JSON.parse(tasksLocal))
-    setIsLoading(false)
-  }, [])
+    const membersLocal = localStorage.getItem(LOCALSTORAGE_MEMBERS_KEY);
+    membersLocal && setMembers(JSON.parse(membersLocal));
+    setIsLoading(false);
+  }, []);
 
-  const handleTermSearch = (e) => {
-    const valueTerm = e.target.value.toLocaleLowerCase()
-    setSearchTaskName(valueTerm)
-  }
+  const totalMembers = useMemo(() => {
+    return members.length;
+  }, [members]);
 
-  const totalTasks = useMemo(() => {
-    return tasks.length
-  }, [tasks])
-
-  const totalCompletedTasks = useMemo(() => {
-    return tasks.filter(task => task.completed).length
-  })
+  const getUsersLeetcodeProfile = async (membersList) => {
+    const url = `/api/get-all-members-leetcode-profile`;
+    const request = membersList;
+    return api
+      .post(url, request)
+      .then((res) => res.data)
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <h1>TODOLIST</h1>
+        <div className={styles.display_row}>
+          <img
+            className={styles.main_icon}
+            src="src\asset\img\leetfriends_icon.svg"
+            alt=""
+          />
+          <h1>Leetfriends</h1>
+        </div>
 
-        <Form onSubmit={onAddTask} />
+        <Form onSubmit={submitMember} />
 
-        <hr />
-
-        <Input
-          type="text"
-          value={searchTaskName}
-          onChange={handleTermSearch}
-          placeholder="Pesquisar uma tarefa"
-        />
-
-        <Tasks
-          tasks={tasks}
-          searchTaskName={searchTaskName}
-          onRemoveTask={onRemoveTask}
-          onChangeCompletedTask={onChangeCompleted}
-        />
-
-        <footer className={styles.footer}>
-          <h6>
-            Total de tarefas:
-            <span>{totalTasks}</span>
-          </h6>
-
-          <h6>
-            Total de tarefas concluidas:
-            <span>{totalCompletedTasks}</span>
-          </h6>
-        </footer>
+        {dataLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <Tasks
+              onRemoveTask={onRemoveTask}
+              members={members}
+              loggedInUserLeetcodeProfile={loggedInUserLeetcodeProfile}
+            />
+            <footer className={styles.footer}>
+              <h6>
+                Total users:
+                <span>{totalMembers}</span>
+              </h6>
+            </footer>
+          </>
+        )}
       </div>
-
     </div>
-  )
+  );
 }
