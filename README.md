@@ -9,7 +9,7 @@
 
 Project is powered by React JS and bundler is Vite.
 
-- [x] Add the name of your leetcode friend. hence the name Leetfriends
+- [x] Add the name of your leetcode friend.
 - [x] Remove the leetcode user from the list.
 - [x] Track how you rank among your peers.
 - [x] Your friends are stored in your local storage.
@@ -23,3 +23,7 @@ $ npm i
 
 $ npm run dev
 ```
+
+## Special Thanks and credits
+Template has been used from leovargasdev project react-todolist. 
+Thank you!
