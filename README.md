@@ -1,31 +1,22 @@
 <h1 align="center">
-  Todolist
+  Leetfriends
 </h1>
 
-<img src="./.github/screenshot.png" />
+<img src="./.github/screenshot.jpg" />
 
 
-## Projeto
+## Project
 
-Essa é uma lista de tarefas feita com a lib [ReactJS](https://pt-br.reactjs.org/), contendo as seguintes funcionalidades:
+Project is powered by React JS and bundler is Vite.
 
-- [x] Adicionar nova tarefa
-- [x] Remover tarefa
-- [x] Pesquisar tarefa
-- [x] Marcar tarefa como concluida
-- [x] Contador de tarefas criadas
-- [x] Contador de tarefas concluidas
+- [x] Add the name of your leetcode friend. hence the name Leetfriends
+- [x] Remove the leetcode user from the list.
+- [x] Track how you rank among your peers.
+- [x] Your friends are stored in your local storage.
+- [x] If you enter a wrong leetcode username the list remains the same.
 
-## Como executar
 
-Será necessário fazer o clone do projeto
-
-```bash
-$ git clone https://github.com/rasmoo-edtech/react-todolist 
-```
-
-Instalar as dependências e executar o script de inicialização
-
+Installation of the dependency is done via:-
 
 ```bash
 $ npm i
