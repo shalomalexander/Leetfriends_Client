@@ -16,10 +16,10 @@ export function Form({ onSubmit }) {
     event.preventDefault();
     const storedMembers = JSON.parse(
       localStorage.getItem(LOCALSTORAGE_MEMBERS_KEY)
-    );
+    ) || [];
 
     let memberAlreadyExist = false;
-
+ 
     storedMembers.forEach((x) => {
       if (member.toUpperCase() === x.member.toUpperCase()) {
         memberAlreadyExist = true;

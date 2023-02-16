@@ -72,7 +72,7 @@ export function App() {
         <div className={styles.display_row}>
           <img
             className={styles.main_icon}
-            src="src\asset\img\leetfriends_icon.svg"
+            src="..\asset\img\leetfriends_icon.svg"
             alt=""
           />
           <h1>Leetfriends</h1>
